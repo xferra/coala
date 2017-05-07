@@ -315,12 +315,23 @@ class Section:
         >>> section.defaults.name
         'all'
 
+        This works for uppercase sections as well. The key of the sections dict
+        is expected to be lowered though!
+
+        >>> sections = {'c': Section('C')}
+        >>> section = Section('C.something')
+        >>> section.set_default_section(sections)
+        >>> section.defaults.name
+        'C'
+
         :param sections:     A dictionary of sections.
         :param section_name: Optional section name argument to find the default
                              section for. If not given then use member section
                              name.
         """
-        default_section = '.'.join((section_name or self.name).split('.')[:-1])
+        default_section = '.'.join(
+            (section_name or self.name).split('.')[:-1]
+        ).lower()
 
         if default_section:
             if default_section in sections:
